@@ -1,5 +1,6 @@
 import { Column, Entity, ManyToOne, PrimaryGeneratedColumn, Relation } from "typeorm";
 import { Serie } from "./Serie.model";
+import { Director } from "./Director.model";
 
 @Entity("epsodes")
 export class Epsode {
@@ -28,5 +29,8 @@ export class Epsode {
 
     @ManyToOne(() => Serie, (serie) => serie.epsodes)
     serie: Relation<Serie>
+
+    @ManyToOne(() => Director, (director) => director.episode)
+    director: Relation<Director>
 
 } 

@@ -52,6 +52,10 @@ export class directorController {
     const { idDirector } = req.params
     const { name, dob, } = req.body
 
+    const director = await directorRepository.findOneBy({id : idDirector})
+
+    if(!director) return res.status(400).json({message : "director not found"})
+
     try {
       await directorRepository.update({ id: idDirector }, { name: name, dob: dob })
       const upDirector = {
@@ -68,7 +72,10 @@ export class directorController {
 
   async exclude(req: Request, res: Response) {
     const { idDirector } = req.params
+    const director = await directorRepository.findOneBy({id : idDirector})
 
+    if(!director) return res.status(400).json({message : "director not found"})
+    
     try {
       await directorRepository.delete({ id: idDirector })
 

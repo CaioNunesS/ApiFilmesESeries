@@ -1,6 +1,7 @@
 import { Column, Entity, OneToMany, PrimaryGeneratedColumn } from "typeorm";
 import { Movie } from "./Movie.model";
 import { Serie } from "./Serie.model";
+import { Epsode } from "./Epsode.model";
 
 @Entity("directors")
 export class Director {
@@ -19,7 +20,7 @@ export class Director {
     @OneToMany(() => Movie, (movie) => movie.director)
     movies: Movie[]
 
-    @OneToMany(() => Serie, (serie) => serie.director)
-    serie: Serie[]
+    @OneToMany(() => Epsode, (episode) => episode.director)
+    episode: Epsode[]
 
 }

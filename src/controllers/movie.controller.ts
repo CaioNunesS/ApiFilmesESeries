@@ -7,6 +7,9 @@ export class movieController {
     const { title, synopsis, gender, photo, duration, director } = req.body
     const directorId = await directorRepository.findOneBy({ id: director })
 
+    const titleDb = await movieRepository.findOneBy({title: title})
+    if(titleDb) return res.status(400).json({message: "Title duplicated"})
+
     try {
       const newMovie = movieRepository.create({
         title,
@@ -59,6 +62,10 @@ export class movieController {
     const { title, synopsis, gender, photo, duration, director } = req.body
 
     const directorId = await directorRepository.findOneBy({ id: director })
+    const movie = await movieRepository.findOneBy({id : movieId})
+    
+    if(!directorId) return res.status(400).json({message: "director not found"})
+    if(!movie) return res.status(400).json({message: "movie not found"})
 
     try {
       await movieRepository.update({ id: movieId }, { title: title, synopsis: synopsis, gender: gender, duration: duration, photo: photo })
@@ -81,6 +88,9 @@ export class movieController {
   async exclude(req: Request, res: Response) {
     const { movieId } = req.params
 
+    const movie = await movieRepository.findOneBy({id : movieId})
+    if(!movie) return res.status(400).json({message: "movie not found"})
+    
     try {
       await movieRepository.delete({ id: movieId })
 

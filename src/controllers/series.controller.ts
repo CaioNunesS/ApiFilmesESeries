@@ -4,20 +4,18 @@ import { directorRepository } from "../repositories/directory.repository";
 
 export class serieController {
     async create(req: Request, res: Response) {
-        const { title, synopsis, gender, photo, director } = req.body
-        const directorId = await directorRepository.findOneBy({ id: director })
+        const { title, synopsis, gender, photo} = req.body
 
         try {
             const newSerie = serieRepository.create({
                 title,
                 synopsis,
                 gender,
-                photo,
-                director: { id: directorId?.id }
+                photo
             })
             await serieRepository.save(newSerie)
 
-            return res.status(201).json({ message: "Serie added", data: { ...newSerie, director: directorId } })
+            return res.status(201).json({ message: "Serie added", data: { ...newSerie } })
         } catch (error) {
             console.log(error);
             return res.status(500).json({ message: "Internal server error" })
@@ -26,9 +24,7 @@ export class serieController {
 
     async findAll(req: Request, res: Response) {
         try {
-            const takeAll = await serieRepository.find({
-                relations: ["director"]
-            })
+            const takeAll = await serieRepository.find({ })
 
             return res.status(200).json({ message: takeAll })
         } catch (error) {
@@ -41,7 +37,7 @@ export class serieController {
         const { serieId } = req.params
         try {
             const serie = await serieRepository.findOne({
-                where: { id: serieId }, relations: ["director", "epsodes"]
+                where: { id: serieId }, relations: [ "epsodes"]
             })
 
             if (!serie) return res.status(404).json({ message: "Serie not found" })
@@ -55,18 +51,19 @@ export class serieController {
 
     async update(req: Request, res: Response) {
         const { serieId } = req.params
-        const { title, synopsis, gender, photo, director } = req.body
+        const { title, synopsis, gender, photo } = req.body
 
-        const directorId = await directorRepository.findOneBy({ id: director })
+        const serie = await serieRepository.findOneBy({id: serieId}) 
 
+        if(!serie) return res.status(400).json({message: "serie not found"})
+        
         try {
             await serieRepository.update({ id: serieId }, { title: title, synopsis: synopsis, gender: gender, photo: photo })
             const upSerie = {
                 title: title,
                 synopsis: synopsis,
                 gender: gender,
-                photo: photo,
-                director: { id: directorId?.id }
+                photo: photo
             }
             res.status(200).json({ message: "data updated", data: upSerie })
 
@@ -79,6 +76,10 @@ export class serieController {
     async exclude(req: Request, res: Response) {
         const { serieId } = req.params
 
+        
+        const serie = await serieRepository.findOneBy({id: serieId}) 
+        if(!serie) return res.status(400).json({message: "serie not found"})
+        
         try {
             await serieRepository.delete({ id: serieId })
 

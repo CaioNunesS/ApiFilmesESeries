@@ -29,7 +29,4 @@ export class Serie {
 
     @OneToMany(() => Epsode, (epsode) => epsode.serie)
     epsodes: Epsode[]
-
-    @ManyToOne(() => Director, (director) => director.serie)
-    director: Relation<Director>
 } 

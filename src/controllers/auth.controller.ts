@@ -36,9 +36,8 @@ export class authController {
     async profile(req: Request, res: Response){
 
         const id = req.id
-        let user = await userRepository.findOneBy({ id: id });
+        let user = await userRepository.findOne({where: { id: id }, select: ["id", "email", "name"]});
 
-    // const { id, name, email, isAdmin, createdAt, updatedAt  } = user
 
     return res.json({ data: { user} });
     }

@@ -23,7 +23,7 @@ export class uploadEpisodeVideo{
         
         if(!getEpisodeId) return res.status(404).json({message: "Episode not found"})
 
-        const {title, photo, episodeFile} = getEpisodeId
+        const {title, photo} = getEpisodeId
         const episodeVideo = `${process.env.URL_IMAGE}/${req.file.filename}`
         
         const episode = {title, photo, episodeVideo}
