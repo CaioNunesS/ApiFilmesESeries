@@ -1,0 +1,25 @@
+version: "3.8"
+
+services:
+  postgres-database:
+    image: postgres
+    container_name: "filmes-e-series-database"
+    ports:
+      - "5432:5432"
+    environment:
+      POSTGRES_PASSWORD: admin123
+    networks:
+      - backend
+
+  pgadmin:
+    image: dpage/pgadmin4
+    container_name: "api-filmes-e-series"
+    ports:
+      - "8082:80"
+    environment:
+      PGADMIN_DEFAULT_EMAIL: admin@admin.com
+      PGADMIN_DEFAULT_PASSWORD: admin123
+    networks:
+      - backend
+networks:
+  backend:
