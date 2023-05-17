@@ -14,8 +14,11 @@ export class User {
     })
     email: string
 
-    @Column({type: "text"})
+    @Column({ type: "text" })
     password: string
+
+    @Column({ type: "boolean", nullable: true })
+    isAdmin: boolean
 
 }
 

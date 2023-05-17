@@ -5,20 +5,28 @@ import { userRepository } from "../repositories/user.repository";
 export class userController {
     async create(req: Request, res: Response) {
         const { name, email, password } = req.body
+        let isAdmin = false
 
         const userPassword = await bcrypt.genSalt(10).then(salt => { return bcrypt.hash(password, salt) });
+        const emailDb = await userRepository.findOneBy({email: email})
 
+        if(emailDb) return res.status(400).json({message: "User duplicated"})
+
+        const userDb = await userRepository.find({})
+        if(userDb.length < 1) isAdmin = true
+        
         try {
             const newUser = userRepository.create({
                 name,
                 email,
-                password: userPassword
+                password: userPassword,
+                isAdmin: isAdmin
             })
             await userRepository.save(newUser)
 
             const id = newUser.id
 
-            return res.status(200).json({ message: "User created", id: id, name: name, email: email })
+            return res.status(200).json({ message: "User created", id: id, name: name, email: email, isAdmin: isAdmin })
 
         } catch (error) {
             console.error(error);
@@ -41,7 +49,7 @@ export class userController {
         const { userId } = req.params
         try {
             const user = await userRepository.findOne({
-                where: { id: userId }, select: ["id", "email", "name"]
+                where: { id: userId }, select: ["id", "email", "name", "isAdmin"]
             })
 
             if (!user) return res.status(404).json({ message: "User not found" })

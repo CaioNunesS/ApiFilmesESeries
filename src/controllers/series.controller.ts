@@ -93,9 +93,8 @@ export class serieController {
             if (error instanceof QueryFailedError) {
         
                 const err = error.driverError as DatabaseError;
-                const errorMessage = err.message.replace(/["\\]/g, "");
                 if (err.code === '23503') {
-                  return res.status(500).json({ message: errorMessage })
+                    return res.status(500).json({ message: "Was not possible to delete this data. Verify the relations" })
                 }
               }
         }
