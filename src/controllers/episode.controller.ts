@@ -83,9 +83,10 @@ export class episodeController {
                 title: title,
                 synopsis: synopsis,
                 duration: duration,
-                director: { id: serieId?.id }
+                serie: {id: serieId.title},
+                director: { id: directorId?.name }
             }
-            res.status(200).json({ message: "data updated", data: upEpsode })
+            res.status(200).json({ message: "data updated", data: upEpsode, })
 
         } catch (error) {
             console.error(error);

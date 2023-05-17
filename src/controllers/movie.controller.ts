@@ -63,7 +63,9 @@ export class movieController {
 
     const directorId = await directorRepository.findOneBy({ id: director })
     const movie = await movieRepository.findOneBy({id : movieId})
-    
+    const titleBd = await movieRepository.findOneBy({title : title})
+
+    if(titleBd) return res.status(400).json({message: "Duplicated data"})
     if(!directorId) return res.status(400).json({message: "director not found"})
     if(!movie) return res.status(400).json({message: "movie not found"})
 
