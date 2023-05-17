@@ -1,7 +1,7 @@
 import { existsSync, unlinkSync } from "fs";
 import { resolve } from "path";
 import { Request, Response } from "express";
-import { epsodeRepository } from "../repositories/epsode.repository";
+import { episodeRepository } from "../repositories/episode.repository";
 
 export class uploadEpisodeVideo{
 
@@ -19,7 +19,7 @@ export class uploadEpisodeVideo{
         
         if (!req.file) return res.status(422).json({ message: "Please select a file" });
         
-        const getEpisodeId: any = await epsodeRepository.findOneBy({id: episodeId});
+        const getEpisodeId: any = await episodeRepository.findOneBy({id: episodeId});
         
         if(!getEpisodeId) return res.status(404).json({message: "Episode not found"})
 
@@ -28,7 +28,7 @@ export class uploadEpisodeVideo{
         
         const episode = {title, photo, episodeVideo}
     try {
-        await epsodeRepository.update({id: episodeId}, {episodeFile: episodeVideo})
+        await episodeRepository.update({id: episodeId}, {episodeFile: episodeVideo})
     
         return res.json({ data: episode });
         

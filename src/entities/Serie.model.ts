@@ -1,6 +1,5 @@
-import { Column, Entity, ManyToOne, OneToMany, PrimaryGeneratedColumn, Relation } from "typeorm";
-import { Epsode } from "./Epsode.model";
-import { Director } from "./Director.model";
+import { Column, Entity, OneToMany, PrimaryGeneratedColumn } from "typeorm";
+import { Episode } from "./Episode.model";
 
 @Entity("series")
 export class Serie {
@@ -27,6 +26,6 @@ export class Serie {
     })
     photo: string
 
-    @OneToMany(() => Epsode, (epsode) => epsode.serie)
-    epsodes: Epsode[]
+    @OneToMany(() => Episode, (episode) => episode.serie)
+    epsodes: Episode[]
 } 

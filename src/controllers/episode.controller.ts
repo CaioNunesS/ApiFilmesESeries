@@ -1,26 +1,26 @@
 import { Request, Response } from "express";
-import { epsodeRepository } from "../repositories/epsode.repository";
+import { episodeRepository } from "../repositories/episode.repository";
 import { serieRepository } from "../repositories/serie.repository";
 import { directorRepository } from "../repositories/directory.repository";
 
-export class epsodeController {
+export class episodeController {
     async create(req: Request, res: Response) {
         const { title, synopsis, duration, serie, director  } = req.body
         const serieId = await serieRepository.findOneBy({ id: serie })
         const directorId = await directorRepository.findOneBy({ id: director })
 
-        const titleDb = await epsodeRepository.findOneBy({title: title})
+        const titleDb = await episodeRepository.findOneBy({title: title})
         if(titleDb) return res.status(400).json({message: "Title duplicated"})
 
         try {
-            const newEpsode = epsodeRepository.create({
+            const newEpsode = episodeRepository.create({
                 title,
                 synopsis,
                 duration,
                 serie: { id: serieId?.id },
                 director: { id: directorId?.id }
             })
-            await epsodeRepository.save(newEpsode)
+            await episodeRepository.save(newEpsode)
 
             return res.status(201).json({ message: "Epsode added", data: { ...newEpsode, serie: serieId, director: directorId } })
         } catch (error) {
@@ -31,7 +31,7 @@ export class epsodeController {
 
     async findAll(req: Request, res: Response) {
         try {
-            const takeAll = await epsodeRepository.find({
+            const takeAll = await episodeRepository.find({
                 relations: ["serie", "director"]
             })
 
@@ -45,7 +45,7 @@ export class epsodeController {
     async find(req: Request, res: Response) {
         const { epsodeId } = req.params
         try {
-            const epsode = await epsodeRepository.findOne({
+            const epsode = await episodeRepository.findOne({
                 where: { id: epsodeId }, relations: ["serie", "director"]
             })
 
@@ -63,7 +63,7 @@ export class epsodeController {
         const { title, synopsis, duration, serie, director } = req.body
 
         const serieId = await serieRepository.findOneBy({ id: serie })
-        const episodeId = await epsodeRepository.findOneBy({ id: epsodeId })
+        const episodeId = await episodeRepository.findOneBy({ id: epsodeId })
         const directorId = await directorRepository.findOneBy({ id: director })
         
         if(!serieId) return res.status(400).json({message: "serie not found"})
@@ -71,7 +71,7 @@ export class epsodeController {
         if(!episodeId) return res.status(400).json({message: "episode not found"})
 
         try {
-            await epsodeRepository.update({
+            await episodeRepository.update({
                 id: epsodeId
             },
                 {
@@ -96,12 +96,12 @@ export class epsodeController {
     async exclude(req: Request, res: Response) {
         const { epsodeId } = req.params
 
-        const episodeId = await epsodeRepository.findOneBy({ id: epsodeId })
+        const episodeId = await episodeRepository.findOneBy({ id: epsodeId })
 
         if(!episodeId) return res.status(400).json({message: "episode not found"})
 
         try {
-            await epsodeRepository.delete({ id: epsodeId })
+            await episodeRepository.delete({ id: epsodeId })
 
             return res.status(200).json({ message: "data deleted" })
 

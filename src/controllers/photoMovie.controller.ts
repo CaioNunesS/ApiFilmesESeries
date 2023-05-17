@@ -26,7 +26,7 @@ export class uploadMoviePhoto{
         const {title, photo} = getMovieId
         const moviePhoto = `${process.env.URL_IMAGE}/${req.file.filename}`
         
-        const movie = {title, photo}
+        const movie = {title, moviePhoto}
     try {
         await movieRepository.update({id: movieId}, {photo: moviePhoto})
     

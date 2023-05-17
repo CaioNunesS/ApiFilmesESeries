@@ -6,12 +6,6 @@ import { Response, Request } from "express"
 import { userRepository } from "../repositories/user.repository"
 import bcrypt from "bcrypt"
 
-// const matchPassword = async function (userPassword: string, ) {
-    
-//     const isMatch = await bcrypt.compare(userPassword, User.);
-//     return isMatch;
-// }
-
 export class authController {
     async login(req: Request, res: Response) {
 

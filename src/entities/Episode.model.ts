@@ -3,7 +3,7 @@ import { Serie } from "./Serie.model";
 import { Director } from "./Director.model";
 
 @Entity("epsodes")
-export class Epsode {
+export class Episode {
     @PrimaryGeneratedColumn("uuid")
     id: string
 

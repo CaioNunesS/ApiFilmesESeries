@@ -1,10 +1,14 @@
 import { Request, Response } from "express";
 import { serieRepository } from "../repositories/serie.repository";
-import { directorRepository } from "../repositories/directory.repository";
+import { QueryFailedError } from 'typeorm';
+import { DatabaseError } from 'pg-protocol'
 
 export class serieController {
     async create(req: Request, res: Response) {
         const { title, synopsis, gender, photo} = req.body
+
+        const titleDb = await serieRepository.findOneBy({title: title})
+        if(titleDb) return res.status(400).json({message: "title duplicated"})
 
         try {
             const newSerie = serieRepository.create({
@@ -86,8 +90,14 @@ export class serieController {
             return res.status(200).json({ message: "data deleted" })
 
         } catch (error) {
-            console.error(error);
-            return res.status(500).json({ message: "Internal server error" })
+            if (error instanceof QueryFailedError) {
+        
+                const err = error.driverError as DatabaseError;
+                const errorMessage = err.message.replace(/["\\]/g, "");
+                if (err.code === '23503') {
+                  return res.status(500).json({ message: errorMessage })
+                }
+              }
         }
     }
 }
