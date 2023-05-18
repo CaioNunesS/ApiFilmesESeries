@@ -7,7 +7,7 @@ import { newUser } from "../schemaValidations/user.validation";
 import { isAdministrator } from "../middleware/isAdmin";
 
 const userRoutes = Router();
-userRoutes.post("/", validate(newUser), asyncWrapper(new userController().create))
+userRoutes.post("/", isAuthenticated, isAdministrator, validate(newUser), asyncWrapper(new userController().create))
 userRoutes.get("/", isAuthenticated, asyncWrapper(new userController().findAll))
 userRoutes.get("/:userId", isAuthenticated, asyncWrapper(new userController().find))
 userRoutes.put("/:userId", isAuthenticated, validate(newUser), asyncWrapper(new userController().update))

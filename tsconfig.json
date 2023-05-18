@@ -12,8 +12,8 @@
     "emitDecoratorMetadata": true,
     "module": "CommonJS",
     "moduleResolution": "node",
-    "typeRoots": ["./node_modules/@types", "./src/types"],                                  /* Specify multiple folders that act like './node_modules/@types'. */
-    "types": ["node"],   
+    "typeRoots": ["./node_modules/@types", "./src/@types"],                                  /* Specify multiple folders that act like './node_modules/@types'. */
+    "types": ["jest", "node" ],   
     "resolveJsonModule": true,
     "allowJs": true,
     "outDir": "./dist",
@@ -29,7 +29,7 @@
     "composite": true,
   },
   "include": [
-    "src/**/*.ts", "src/dataSource.ts" ],
+    "src/**/*.ts", "src/dataSource.ts"],
   "exclude": [
     "node_modules",
     "dist"
