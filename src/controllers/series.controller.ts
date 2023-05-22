@@ -94,7 +94,7 @@ export class serieController {
         
                 const err = error.driverError as DatabaseError;
                 if (err.code === '23503') {
-                    return res.status(500).json({ message: "Was not possible to delete this data. Verify the relations" })
+                    return res.status(500).json({ message: "Was not possible to delete this data." })
                 }
               }
         }

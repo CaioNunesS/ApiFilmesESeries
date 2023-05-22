@@ -1,6 +1,5 @@
 import { Column, Entity, OneToMany, PrimaryGeneratedColumn } from "typeorm";
 import { Movie } from "./Movie.model";
-import { Serie } from "./Serie.model";
 import { Episode } from "./Episode.model";
 
 @Entity("directors")

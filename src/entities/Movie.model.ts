@@ -35,6 +35,6 @@ export class Movie {
     @Column({ type: "int" })
     duration: number
 
-    @ManyToOne(() => Director, (director) => director.movies)
+    @ManyToOne(() => Director, (director) => director.movies, {onDelete: "CASCADE"})
     director: Relation<Director>
 } 

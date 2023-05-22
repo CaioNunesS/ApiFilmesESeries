@@ -27,10 +27,10 @@ export class Episode {
     @Column({ type: "int" })
     duration: number
 
-    @ManyToOne(() => Serie, (serie) => serie.epsodes)
+    @ManyToOne(() => Serie, (serie) => serie.epsodes, {onDelete: "CASCADE"})
     serie: Relation<Serie>
 
-    @ManyToOne(() => Director, (director) => director.episode)
+    @ManyToOne(() => Director, (director) => director.episode, {onDelete: "CASCADE"})
     director: Relation<Director>
 
 } 
